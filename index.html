@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Laboratorio JS y AJAX</title>
+  <style>
+    /* Le damos un estilo general a la página: fuente legible, espacio alrededor y fondo azul claro */
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+      background-color: #add8e6; /* fondo azul claro */
+      color: #000; /* texto negro para que se lea bien */
+    }
+    /* Los textos de las etiquetas (labels) los ponemos en bloque para que cada uno esté en su línea y con espacio arriba */
+    label { display: block; margin-top: 15px; }
+    /* Los cuadros de texto y áreas de texto ocupan todo el ancho y tienen un poco de espacio interno y borde redondeado */
+    input[type="text"], textarea { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 5px; 
+      box-sizing: border-box; 
+      border: 1px solid #333;
+      border-radius: 4px;
+    }
+    /* Botones con color azul oscuro, texto blanco y que cambian de color cuando pasas el mouse */
+    button { 
+      margin-top: 10px; 
+      padding: 10px 15px; 
+      cursor: pointer; 
+      border: none;
+      background-color: #00509e; /* azul oscuro */
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #003f6b;
+    }
+    /* Las cajas donde mostramos los resultados tienen fondo azul oscuro y texto blanco para que resalten */
+    .output { 
+      margin-top: 10px; 
+      padding: 10px; 
+      background: #003f6b; /* azul oscuro */
+      color: white; /* texto blanco */
+      border-radius: 4px; 
+      white-space: pre-wrap; /* para que se respeten los saltos de línea */
+      font-weight: bold;
+    }
+    /* Separación entre cada sección para que no se vea todo amontonado */
+    .section { margin-bottom: 30px; }
+  </style>
+</head>
+<body>
+
+  <h1>Desarrollo de Aplicaciones en Red "Laboratorio - JavaScript y AJAX"</h1>  
+
+  <!-- Aquí empieza la parte para detectar si una palabra o frase es palíndromo -->
+  <div class="section">
+    <h2>1. Detectar Palíndromo</h2>
+    <label for="palindromoInput">Escribe una palabra o frase:</label>
+    <input type="text" id="palindromoInput" />
+    <!-- Al hacer clic en el botón se ejecuta la función que revisa si es palíndromo -->
+    <button onclick="detectarPalindromo()">Verificar</button>
+    <!-- Aquí aparecerá el mensaje que dice si es o no palíndromo -->
+    <div id="palindromoResultado" class="output"></div>
+  </div>
+
+  <!-- Aquí comparamos dos números para saber cuál es mayor -->
+  <div class="section">
+    <h2>2. Comparar dos números y determinar cuál es mayor</h2>
+    <label for="numero1">Número 1:</label>
+    <input type="text" id="numero1" />
+    <label for="numero2">Número 2:</label>
+    <input type="text" id="numero2" />
+    <!-- Al hacer clic se ejecuta la función que compara los números -->
+    <button onclick="compararNumeros()">Comparar</button>
+    <!-- Resultado que muestra cuál número es mayor o si son iguales -->
+    <div id="compararResultado" class="output"></div>
+  </div>
+
+  <!-- Aquí mostramos las vocales que aparecen en una frase, sin repetirlas -->
+  <div class="section">
+    <h2>3. Vocales únicas en una frase</h2>
+    <label for="fraseVocales">Escribe una frase:</label>
+    <input type="text" id="fraseVocales" />
+    <!-- Al hacer clic se ejecuta la función que encuentra las vocales -->
+    <button onclick="mostrarVocales()">Mostrar vocales</button>
+    <!-- Aquí aparecen las vocales encontradas -->
+    <div id="vocalesResultado" class="output"></div>
+  </div>
+
+  <!-- Aquí contamos cuántas veces aparece cada vocal en la frase -->
+  <div class="section">
+    <h2>4. Contar vocales en una frase</h2>
+    <label for="fraseConteo">Escribe una frase:</label>
+    <input type="text" id="fraseConteo" />
+    <!-- Al hacer clic se ejecuta la función que cuenta las vocales -->
+    <button onclick="contarVocales()">Contar vocales</button>
+    <!-- Aquí aparece el conteo de cada vocal -->
+    <div id="conteoResultado" class="output"></div>
+  </div>
+
+  <script>
+    // Esta función revisa si el texto que escribiste es un palíndromo
+    function detectarPalindromo() {
+      // Tomamos el texto que ingresaste
+      const texto = document.getElementById("palindromoInput").value;
+      // Lo limpiamos: lo pasamos a minúsculas y sacamos todo lo que no sea letra o número
+      const limpio = texto.toLowerCase().replace(/[^a-z0-9]/g, "");
+      // Le damos la vuelta al texto limpio
+      const invertido = limpio.split("").reverse().join("");
+      // Comparamos si el texto limpio es igual al invertido
+      const esPalindromo = limpio === invertido;
+
+      // Preparamos el mensaje para mostrarte si es o no palíndromo
+      const resultado = esPalindromo
+        ? `"${texto}" es un palíndromo.`
+        : `"${texto}" NO es un palíndromo.`;
+      // Mostramos el resultado en la página
+      document.getElementById("palindromoResultado").textContent = resultado;
+    }
+
+    // Esta función compara dos números y te dice cuál es mayor
+    function compararNumeros() {
+      // Tomamos los números que escribiste y los convertimos a números reales
+      const num1 = parseFloat(document.getElementById("numero1").value);
+      const num2 = parseFloat(document.getElementById("numero2").value);
+      let resultado;
+
+      // Si alguno no es un número válido, te pedimos que ingreses números correctos
+      if (isNaN(num1) || isNaN(num2)) {
+        resultado = "Por favor, ingresa dos números válidos.";
+      } 
+      // Si el primero es mayor, te decimos cuál es
+      else if (num1 > num2) {
+        resultado = `El número mayor es: ${num1}`;
+      } 
+      // Si el segundo es mayor, te decimos cuál es
+      else if (num2 > num1) {
+        resultado = `El número mayor es: ${num2}`;
+      } 
+      // Si son iguales, también te lo decimos
+      else {
+        resultado = "Ambos números son iguales.";
+      }
+
+      // Mostramos el resultado en la página
+      document.getElementById("compararResultado").textContent = resultado;
+    }
+
+    // Esta función encuentra todas las vocales diferentes que aparecen en la frase que escribiste
+    function mostrarVocales() {
+      // Tomamos la frase y la convertimos a minúsculas para no tener problemas con mayúsculas
+      const frase = document.getElementById("fraseVocales").value.toLowerCase();
+      // Creamos un conjunto para guardar las vocales sin repetir
+      const vocales = new Set();
+      // Recorremos cada letra de la frase
+      for (let char of frase) {
+        // Si la letra es una vocal, la agregamos al conjunto
+        if ("aeiou".includes(char)) {
+          vocales.add(char);
+        }
+      }
+      // Si encontramos vocales, las mostramos separadas por comas, si no, decimos que no hay
+      const resultado = vocales.size > 0
+        ? `Vocales encontradas: ${Array.from(vocales).join(", ")}`
+        : "No se encontraron vocales.";
+      // Mostramos el resultado en la página
+      document.getElementById("vocalesResultado").textContent = resultado;
+    }
+
+    // Esta función cuenta cuántas veces aparece cada vocal en la frase que escribiste
+    function contarVocales() {
+      // Tomamos la frase y la pasamos a minúsculas
+      const frase = document.getElementById("fraseConteo").value.toLowerCase();
+      // Creamos un objeto para contar cada vocal
+      const contador = { a: 0, e: 0, i: 0, o: 0, u: 0 };
+
+      // Recorremos cada letra de la frase
+      for (let char of frase) {
+        // Si la letra es una vocal, aumentamos su contador
+        if (contador.hasOwnProperty(char)) {
+          contador[char]++;
+        }
+      }
+
+      // Preparamos un texto para mostrar cuántas veces aparece cada vocal
+      let resultado = "Conteo de vocales:\n";
+      for (const [vocal, cantidad] of Object.entries(contador)) {
+        resultado += `${vocal.toUpperCase()}: ${cantidad}\n`;
+      }
+
+      // Mostramos el conteo en la página
+      document.getElementById("conteoResultado").textContent = resultado.trim();
+    }
+  </script>
+</body>
+</html>
